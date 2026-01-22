@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryan Salon - Product</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Ryan Salon</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="treatment.html">Treatment</a></li>
+                <li><a href="product.html" class="active">Product</a></li>
+                <li><a href="profile.html">Profil</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Produk Kecantikan</h1>
+            <p>Produk berkualitas untuk perawatan di rumah</p>
+        </div>
+    </section>
+
+    <!-- Product List -->
+    <section class="product-section">
+        <div class="container">
+            <div class="product-grid">
+                <!-- Produk akan dimuat secara dinamis di sini -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-address">
+                    <p>📍 Jl. Ki Mansyur, Babatan, Kec. Kadugede, Kabupaten Kuningan, Jawa Barat 45561</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script untuk Load Produk dari Apps Script -->
+    <script>
+        async function loadProducts() {
+            const apiUrl = 'https://script.google.com/macros/s/AKfycbyTajcvYF_evx-449EOXrO1ugqGXkRGfLhEtAeIeILYf3NMkKluYHgnknerWXoYX4wx-A/exec'; 
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const products = await response.json();
+                const productGrid = document.querySelector('.product-grid');
+                productGrid.innerHTML = ''; // Clear existing products
+
+                products.forEach(product => {
+                    const productCard = `
+                        <div class="product-card">
+                            <div class="product-photo-placeholder">
+                                <img src="${product.imageUrl}" alt="${product.name}" class="product-img" onerror="this.src='placeholder.png'">
+                            </div>
+                            <div class="product-info">
+                                <h3>${product.name}</h3>
+                                <p>${product.description}</p>
+                                <p class="product-price">Rp ${product.price ? product.price.toLocaleString('id-ID') : 'Harga belum tersedia'}</p>
+                            </div>
+                        </div>
+                    `;
+                    productGrid.innerHTML += productCard;
+                });
+            } catch (error) {
+                console.error('Error loading products:', error);
+                // Fallback: Tampilkan pesan error
+                document.querySelector('.product-grid').innerHTML = '<p>Gagal memuat produk. Coba lagi nanti.</p>';
+            }
+        }
+
+        // Load produk saat halaman dimuat
+        window.onload = loadProducts;
+    </script>
+</body>
+</html>
