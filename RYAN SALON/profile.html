@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryan Salon - Profil</title>
+    <link rel="stylesheet" href="style2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Ryan Salon</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="treatment.html">Treatment</a></li>
+                <li><a href="product.html">Product</a></li>
+                <li><a href="profile.html" class="active">Profil</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Profil Ryan Salon</h1>
+            <p>Mengenal lebih dekat tentang kami</p>
+        </div>
+    </section>
+
+<section class="profile-section">
+  <div class="container">
+    <div class="profile-content">
+
+      <div class="profile-box">
+        <h2>Tentang Kami</h2>
+        <p>Ryan Salon adalah salon kecantikan rumahan yang didirikan dengan komitmen untuk memberikan pelayanan terbaik kepada setiap pelanggan.</p>
+        <p>Tim kami terdiri dari profesional terlatih dengan pengalaman di bidang kecantikan.</p>
+        <p>Setiap kunjungan Anda adalah fokus utama kami.</p>
+      </div>
+
+      <div class="profile-box">
+        <h2>Daftar Pegawai</h2>
+        <div class="pegawai-grid" id="pegawaiData"></div>
+      </div>
+
+      <div class="profile-box">
+        <h2>Jam Operasional</h2>
+        <div class="hours-info">
+          <div class="hours-item">
+            <span class="hours-label">Buka:</span>
+            <span class="hours-value">09.00 WIB</span>
+          </div>
+          <div class="hours-item">
+            <span class="hours-label">Tutup:</span>
+            <span class="hours-value">21.00 WIB</span>
+          </div>
+          <p class="hours-note">Buka setiap hari</p>
+        </div>
+      </div>
+
+      <div class="profile-box">
+        <h2>Kategori</h2>
+        <div class="category-badge">Salon Kecantikan</div>
+      </div>
+
+      <div class="profile-box">
+        <h2>Mengapa Memilih Ryan Salon</h2>
+        <ul class="benefits-list">
+          <li>✓ Pelayanan profesional</li>
+          <li>✓ Produk berkualitas</li>
+          <li>✓ Harga terjangkau</li>
+          <li>✓ Tempat nyaman</li>
+          <li>✓ Konsultasi gratis</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-address">
+                    <p>📍 Jl. Ki Mansyur, Babatan, Kec. Kadugede, Kabupaten Kuningan, Jawa Barat 45561</p>
+                </div>
+                <div class="footer-button">
+                    <!-- TODO: Ganti link WhatsApp dengan nomor yang sebenarnya -->
+                    <!-- <a href="https://wa.me/6281210973438" class="btn-whatsapp" target="_blank">💬 WhatsApp</a> -->
+                    <a href="#" class="btn-whatsapp" target="_blank">💬 WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+const apiURL = "https://script.google.com/macros/s/AKfycbzDBAiPQCcIORp6z2lamVmGACWA_q9swT4KPJs2BHf3ueir30ZdNLkFvrgasUAb3Zrv/exec";
+
+function loadPegawai() {
+  fetch(apiURL + "?t=" + new Date().getTime())
+    .then(res => res.json())
+    .then(data => {
+      const box = document.getElementById("pegawaiData");
+      box.innerHTML = "";
+
+      data.forEach(p => {
+        box.innerHTML += `
+          <div class="pegawai-card">
+            <img src="${p.foto}">
+            <h4>${p.nama}</h4>
+            <p>${p.jabatan}</p>
+            <span>${p.jam}</span>
+          </div>
+        `;
+      });
+    });
+}
+
+loadPegawai();
+setInterval(loadPegawai, 5000);
+</script>
+
+
+
+
+</body>
+</html>
