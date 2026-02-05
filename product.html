@@ -34,40 +34,7 @@
     <section class="product-section">
         <div class="container">
             <div class="product-grid">
-                
-                <!-- Shampoo -->
-                <div class="product-card">
-                    <!-- TODO: Ganti dengan foto produk yang sebenarnya -->
-                    <!-- <img src="product-shampoo.jpg" alt="Shampoo" class="product-img"> -->
-                    <div class="product-photo-placeholder">Foto Produk</div>
-                    <div class="product-info">
-                        <h3>Shampoo</h3>
-                        <p>Shampoo untuk semua jenis rambut</p>
-                    </div>
-                </div>
-
-                <!-- Kondisioner -->
-                <div class="product-card">
-                    <!-- TODO: Ganti dengan foto produk yang sebenarnya -->
-                    <!-- <img src="product-conditioner.jpg" alt="Conditioner" class="product-img"> -->
-                    <div class="product-photo-placeholder">Foto Produk</div>
-                    <div class="product-info">
-                        <h3>Conditioner</h3>
-                        <p>Pelembab rambut yang menutrisi</p>
-                    </div>
-                </div>
-
-                <!-- Hair Tonic -->
-                <div class="product-card">
-                    <!-- TODO: Ganti dengan foto produk yang sebenarnya -->
-                    <!-- <img src="product-serum.jpg" alt="Hair Tonic" class="product-img"> -->
-                    <div class="product-photo-placeholder">Foto Produk</div>
-                    <div class="product-info">
-                        <h3>Hair Serum</h3>
-                        <p>Serum untuk rambut berkilau</p>
-                    </div>
-                </div>
-
+                <!-- Produk akan dimuat secara dinamis di sini -->
             </div>
         </div>
     </section>
@@ -79,13 +46,47 @@
                 <div class="footer-address">
                     <p>📍 Jl. Ki Mansyur, Babatan, Kec. Kadugede, Kabupaten Kuningan, Jawa Barat 45561</p>
                 </div>
-                <div class="footer-button">
-                    <!-- TODO: Ganti link WhatsApp dengan nomor yang sebenarnya -->
-                    <!-- <a href="https://wa.me/6281210973438" class="btn-whatsapp" target="_blank">💬 WhatsApp</a> -->
-                    <a href="#" class="btn-whatsapp" target="_blank">💬 WhatsApp</a>
-                </div>
             </div>
         </div>
     </footer>
+
+    <!-- Script untuk Load Produk dari Apps Script -->
+    <script>
+        async function loadProducts() {
+            const apiUrl = 'https://script.google.com/macros/s/AKfycbyTajcvYF_evx-449EOXrO1ugqGXkRGfLhEtAeIeILYf3NMkKluYHgnknerWXoYX4wx-A/exec'; 
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const products = await response.json();
+                const productGrid = document.querySelector('.product-grid');
+                productGrid.innerHTML = ''; // Clear existing products
+
+                products.forEach(product => {
+                    const productCard = `
+                        <div class="product-card">
+                            <div class="product-photo-placeholder">
+                                <img src="${product.imageUrl}" alt="${product.name}" class="product-img" onerror="this.src='placeholder.png'">
+                            </div>
+                            <div class="product-info">
+                                <h3>${product.name}</h3>
+                                <p>${product.description}</p>
+                                <p class="product-price">Rp ${product.price ? product.price.toLocaleString('id-ID') : 'Harga belum tersedia'}</p>
+                            </div>
+                        </div>
+                    `;
+                    productGrid.innerHTML += productCard;
+                });
+            } catch (error) {
+                console.error('Error loading products:', error);
+                // Fallback: Tampilkan pesan error
+                document.querySelector('.product-grid').innerHTML = '<p>Gagal memuat produk. Coba lagi nanti.</p>';
+            }
+        }
+
+        // Load produk saat halaman dimuat
+        window.onload = loadProducts;
+    </script>
 </body>
 </html>
